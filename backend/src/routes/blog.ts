@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { getPrisma } from "../prismaFunction";
 import { sign, verify } from "hono/jwt";
+import authMiddleware from "../middlewares/auth";
 
 export const blogRouter = new Hono<{
   Bindings: {
@@ -8,9 +9,11 @@ export const blogRouter = new Hono<{
     JWT_SECRET: string;
   };
   Variables: {
-    userId: string;
+    userId: any;
   };
 }>();
+
+blogRouter.use("/*", authMiddleware);
 
 blogRouter.use("/*", async (c, next) => {
   const authHeader = c.req.header("Authorization");
@@ -24,7 +27,7 @@ blogRouter.use("/*", async (c, next) => {
   }
   c.set("userId", decoded.id);
 
-  next();
+  await next();
 });
 
 blogRouter.post("/", async (c) => {

@@ -30,9 +30,7 @@ userRouter.post("/signup", async (c) => {
 
 userRouter.post("/signin", async (c) => {
   const prisma = getPrisma(c.env.DATABASE_URL);
-
   const body = await c.req.json();
-
   const user = await prisma.user.findUnique({
     where: {
       email: body.email,
