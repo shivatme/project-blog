@@ -2,6 +2,10 @@ import { Hono } from "hono";
 import { getPrisma } from "../prismaFunction";
 import { sign, verify } from "hono/jwt";
 import authMiddleware from "../middlewares/auth";
+import {
+  createBlogSchema,
+  updateBlogSchema,
+} from "@shivam5278/projec-blog-common";
 
 export const blogRouter = new Hono<{
   Bindings: {
@@ -13,59 +17,98 @@ export const blogRouter = new Hono<{
   };
 }>();
 
-blogRouter.use("/*", authMiddleware);
+blogRouter.get("/bulk", async (c) => {
+  const prisma = getPrisma(c.env.DATABASE_URL);
+  const posts = await prisma.post.findMany({
+    select: { title: true, content: true, author: { select: { name: true } } },
+  });
 
-blogRouter.use("/*", async (c, next) => {
-  const authHeader = c.req.header("Authorization");
-  if (!authHeader) {
-    return c.json({ error: "Unauthorized" }, 401);
-  }
-  const token = authHeader.split(" ")[1];
-  const decoded = await verify(token, c.env.JWT_SECRET);
-  if (!decoded) {
-    return c.json({ error: "Invalid token" }, 401);
-  }
-  c.set("userId", decoded.id);
-
-  await next();
+  return c.json(posts);
 });
+
+blogRouter.get("/:id", async (c) => {
+  try {
+    const blogId = c.req.param("id");
+    const prisma = getPrisma(c.env.DATABASE_URL);
+    const post = await prisma.post.findUnique({
+      where: {
+        id: blogId,
+      },
+      select: {
+        title: true,
+        content: true,
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    return c.json({ post }, 201);
+  } catch (error) {
+    return c.json({ message: "Internal Server Error" }, 500);
+  }
+});
+
+blogRouter.use("/*", authMiddleware);
 
 blogRouter.post("/", async (c) => {
   const body = await c.req.json();
-  const prisma = getPrisma(c.env.DATABASE_URL);
+  const { success } = createBlogSchema.safeParse(body);
+  if (!success) {
+    return c.json({ message: "Invalid Inputs" }, 411);
+  }
 
-  const blogPost = await prisma.post.create({
-    data: {
-      title: body.title,
-      content: body.content,
-      published: body.published,
-      authorId: "26",
-    },
-  });
-
-  return c.json({ id: blogPost.id });
+  try {
+    const userId = c.get("userId");
+    const prisma = getPrisma(c.env.DATABASE_URL);
+    const post = await prisma.post.create({
+      data: {
+        title: body.title,
+        content: body.content,
+        authorId: userId,
+      },
+    });
+    return c.json(
+      {
+        id: post.id,
+        message: "Successfully created blog post",
+      },
+      201
+    );
+  } catch (error) {
+    return c.json({ message: "Internal Server Error" }, 500);
+  }
 });
 
 blogRouter.put("/", async (c) => {
   const body = await c.req.json();
-  const prisma = getPrisma(c.env.DATABASE_URL);
+  const { success, data } = updateBlogSchema.safeParse(body);
+  if (!success) {
+    return c.json({ message: "Invalid Inputs" }, 411);
+  }
 
-  const blogPost = await prisma.post.update({
-    where: {
-      id: c.req.param("id"),
-    },
-    data: {
-      title: body.title,
-      content: body.content,
-      published: body.published,
-    },
-  });
-
-  return c.json({ id: blogPost.id });
-});
-blogRouter.put("/blog", (c) => {
-  return c.text("Hello Hono!");
-});
-blogRouter.get("/blog/:id", (c) => {
-  return c.text("Hello Hono!");
+  try {
+    const userId = c.get("userId");
+    const prisma = getPrisma(c.env.DATABASE_URL);
+    const post = await prisma.post.update({
+      where: {
+        id: data.id,
+        authorId: userId,
+      },
+      data: {
+        title: data.title,
+        content: data.content,
+      },
+    });
+    return c.json(
+      {
+        id: post.id,
+        message: "Successfully updated blog post",
+      },
+      201
+    );
+  } catch (error) {
+    return c.json({ message: "Internal Server Error" }, 500);
+  }
 });
