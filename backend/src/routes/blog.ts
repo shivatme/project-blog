@@ -20,7 +20,12 @@ export const blogRouter = new Hono<{
 blogRouter.get("/bulk", async (c) => {
   const prisma = getPrisma(c.env.DATABASE_URL);
   const posts = await prisma.post.findMany({
-    select: { title: true, content: true, author: { select: { name: true } } },
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      author: { select: { name: true } },
+    },
   });
 
   return c.json(posts);
@@ -35,6 +40,7 @@ blogRouter.get("/:id", async (c) => {
         id: blogId,
       },
       select: {
+        id: true,
         title: true,
         content: true,
         author: {
