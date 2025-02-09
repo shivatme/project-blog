@@ -24,6 +24,7 @@ userRouter.post("/signup", async (c) => {
         email: body.email,
       },
     });
+    console.log(userExists);
     if (userExists) {
       return c.json({ message: "User already exists" }, 409);
     }
@@ -39,6 +40,7 @@ userRouter.post("/signup", async (c) => {
 
     return c.json({ token: `Bearer ${token}` });
   } catch (error) {
+    console.log(error);
     return c.json({ message: "Internal Server Error" }, 500);
   }
 });
