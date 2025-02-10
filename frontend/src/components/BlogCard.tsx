@@ -46,12 +46,15 @@ export function Circle() {
 export function Avatar({
   name,
   size = "small",
+  onClick = () => {},
 }: {
   name: string;
   size?: "small" | "big";
+  onClick?: () => void;
 }) {
   return (
     <div
+      onClick={onClick}
       className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full ${
         size === "small" ? "w-6 h-6" : "w-10 h-10"
       }`}

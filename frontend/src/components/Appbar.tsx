@@ -19,8 +19,9 @@ export const Appbar = () => {
             New
           </button>
         </Link>
-
-        <Avatar size={"big"} name="Test" />
+        <Link to={"/profile"}>
+          <Avatar size={"big"} name="Test" />
+        </Link>
       </div>
     </div>
   );
