@@ -1,13 +1,18 @@
 import { Appbar } from "../components/Appbar";
-import axios from "axios";
-import { BACKEND_URL } from "../config";
+
 import { useNavigate } from "react-router";
 import { ChangeEvent, useState } from "react";
+import { createBlog } from "../services/blogService";
 
 export const Publish = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
+
+  async function handleSubmit(title: string, description: string) {
+    const response = await createBlog(title, description);
+    navigate(`/blog/${response.id}`);
+  }
 
   return (
     <div>
@@ -29,21 +34,7 @@ export const Publish = () => {
             }}
           />
           <button
-            onClick={async () => {
-              const response = await axios.post(
-                `${BACKEND_URL}/api/v1/blog`,
-                {
-                  title,
-                  content: description,
-                },
-                {
-                  headers: {
-                    Authorization: localStorage.getItem("token"),
-                  },
-                }
-              );
-              navigate(`/blog/${response.data.id}`);
-            }}
+            onClick={() => handleSubmit(title, description)}
             type="submit"
             className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
           >

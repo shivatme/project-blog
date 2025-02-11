@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { getAllBlogs, getBlogById } from "../services/blogService";
 
 export interface Blog {
   content: string;
@@ -16,17 +17,13 @@ export const useBlog = ({ id }: { id: string }) => {
   const [blog, setBlog] = useState<Blog>();
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/api/v1/blog/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        setBlog(response.data.post);
-        setLoading(false);
-      });
+    getBlog(id);
   }, [id]);
+  async function getBlog(id: string) {
+    const response = await getBlogById(id);
+    setBlog(response);
+    setLoading(false);
+  }
 
   return {
     loading,
@@ -38,18 +35,13 @@ export const useBlogs = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/api/v1/blog/bulk`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        setBlogs(response.data);
-        setLoading(false);
-      });
+    getBlogs();
   }, []);
-
+  async function getBlogs() {
+    const response = await getAllBlogs();
+    setBlogs(response);
+    setLoading(false);
+  }
   return {
     loading,
     blogs,

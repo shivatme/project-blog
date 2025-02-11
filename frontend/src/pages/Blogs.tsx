@@ -5,7 +5,7 @@ import { useBlogs } from "../hooks";
 
 export const Blogs = () => {
   const { loading, blogs } = useBlogs();
-
+  console.log(loading);
   if (loading) {
     return (
       <div>

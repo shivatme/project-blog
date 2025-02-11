@@ -1,16 +1,35 @@
+import { useEffect, useState } from "react";
 import { Appbar } from "../components/Appbar";
 import { FullBlog } from "../components/FullBlog";
 import { Spinner } from "../components/Spinner";
 import { useBlog } from "../hooks";
 import { useParams } from "react-router";
+import { getBlogById } from "../services/blogService";
+
+export interface Blog {
+  content: string;
+  title: string;
+  id: number;
+  author: {
+    name: string;
+  };
+}
 
 // atomFamilies/selectorFamilies
 export const Blog = () => {
   const { id } = useParams();
-  const { loading, blog } = useBlog({
-    id: id || "",
-  });
+  const [loading, setLoading] = useState(true);
+  const [blog, setBlog] = useState<Blog>();
 
+  async function getBlog(id: string) {
+    const response = await getBlogById(id);
+    setBlog(response);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    if (id) getBlog(id);
+  }, [id]);
   if (loading || !blog) {
     return (
       <div>
