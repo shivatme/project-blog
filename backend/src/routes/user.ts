@@ -17,6 +17,7 @@ userRouter.post("/signup", async (c) => {
   if (!success) {
     return c.json({ message: "Invalid Inputs" }, 411);
   }
+  console.log(body);
   try {
     const prisma = getPrisma(c.env.DATABASE_URL);
     const userExists = await prisma.user.findUnique({
