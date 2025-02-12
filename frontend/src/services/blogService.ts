@@ -2,7 +2,6 @@ import apiClient from "./apiClient";
 
 export const getAllBlogs = async () => {
   const response = await apiClient.get("/blog/bulk");
-  console.log(response.data);
   return response.data;
 };
 

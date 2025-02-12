@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Appbar } from "../components/Appbar";
 import { FullBlog } from "../components/FullBlog";
 import { Spinner } from "../components/Spinner";
-import { useBlog } from "../hooks";
 import { useParams } from "react-router";
 import { getBlogById } from "../services/blogService";
 
@@ -22,6 +21,7 @@ export const Blog = () => {
   const [blog, setBlog] = useState<Blog>();
 
   async function getBlog(id: string) {
+    setLoading(true);
     const response = await getBlogById(id);
     setBlog(response);
     setLoading(false);

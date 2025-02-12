@@ -1,11 +1,32 @@
+import { useEffect, useState } from "react";
 import { Appbar } from "../components/Appbar";
 import { BlogCard } from "../components/BlogCard";
 import { BlogSkeleton } from "../components/BlogSkeleton";
-import { useBlogs } from "../hooks";
+import { getAllBlogs } from "../services/blogService";
+export interface Blog {
+  content: string;
+  title: string;
+  id: number;
+  author: {
+    name: string;
+  };
+}
 
 export const Blogs = () => {
-  const { loading, blogs } = useBlogs();
-  console.log(loading);
+  const [loading, setLoading] = useState(true);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  async function getBlogs() {
+    setLoading(true);
+    const response = await getAllBlogs();
+    setBlogs(response);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getBlogs();
+  }, []);
+
   if (loading) {
     return (
       <div>
@@ -30,6 +51,7 @@ export const Blogs = () => {
         <div>
           {blogs.map((blog) => (
             <BlogCard
+              key={blog.id}
               id={blog.id}
               authorName={blog.author.name || "Anonymous"}
               title={blog.title}
