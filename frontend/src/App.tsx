@@ -6,13 +6,14 @@ import { Publish } from "./pages/Publish";
 import Signup from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import ProfileScreen from "./pages/Profile";
+import Landing from "./pages/Landing";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Signup />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/blog/:id" element={<Blog />} />
