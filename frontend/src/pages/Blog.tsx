@@ -32,7 +32,7 @@ export const Blog = () => {
   }, [id]);
   if (loading || !blog) {
     return (
-      <div>
+      <div className="min-h-screen bg-black text-white">
         <Appbar />
 
         <div className="h-screen flex flex-col justify-center">
