@@ -7,22 +7,27 @@ import Signup from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import ProfileScreen from "./pages/Profile";
 import Landing from "./pages/Landing";
+import AuthProvider from "./auth/AuthContext";
+import PrivateRoute from "./auth/PrivateRoute";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/blog/:id" element={<Blog />} />
           <Route path="/blogs" element={<Blogs />} />
-          <Route path="/publish" element={<Publish />} />
-          <Route path="/profile" element={<ProfileScreen />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/blog/:id" element={<Blog />} />
+            <Route path="/publish" element={<Publish />} />
+
+            <Route path="/profile" element={<ProfileScreen />} />
+          </Route>
         </Routes>
-      </BrowserRouter>
-    </>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
