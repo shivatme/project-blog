@@ -7,13 +7,7 @@ interface BlogCardProps {
   id: number;
 }
 
-export const BlogCard = ({
-  id,
-  authorName,
-  title,
-  content,
-  publishedDate,
-}: BlogCardProps) => {
+export const BlogCard = ({ id, title, content }: BlogCardProps) => {
   return (
     <Link to={`/blog/${id}`} className="block">
       <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 py-3 px-4">
