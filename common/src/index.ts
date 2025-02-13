@@ -13,15 +13,13 @@ export const signinSchema = zod.object({
 });
 
 export const createBlogSchema = zod.object({
-  title: zod.string().min(2).max(60),
-  //   description: zod.string().min(2).max(60),
-  content: zod.string().min(2).max(60),
+  title: zod.string().min(2).max(100),
+  content: zod.string().min(2).max(6000),
 });
 
 export const updateBlogSchema = zod.object({
-  title: zod.string().min(2).max(60),
-  //   description: zod.string().min(2).max(60),
-  content: zod.string().min(2).max(60),
+  title: zod.string().min(2).max(100),
+  content: zod.string().min(2).max(6000),
   id: zod.string().min(2).max(60),
 });
 
