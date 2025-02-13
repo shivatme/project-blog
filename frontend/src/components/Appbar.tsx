@@ -1,33 +1,47 @@
-import { CodeXml } from "lucide-react";
-import { Avatar } from "./BlogCard";
+import { CodeXml, LogOut, User } from "lucide-react";
+
 import { Link } from "react-router";
+import { useAuth } from "../auth/AuthContext";
 
 export const Appbar = () => {
-  const token = localStorage.getItem("token");
+  const auth = useAuth();
   return (
     <header className="bg-gray-900 py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link
-          to={token ? "/blogs" : "/"}
-          className="text-2xl font-bold flex items-center"
+          to="/"
+          className="text-2xl font-bold flex items-center text-white"
         >
           <CodeXml className="mr-2" /> Dev Bytes
         </Link>
-        <nav>
-          {token ? (
-            <div>
-              <Link to={`/publish`}>
-                <button
-                  type="button"
-                  className="mr-4 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 "
-                >
-                  New
-                </button>
+        <nav className="flex items-center">
+          <Link
+            to="/blogs"
+            className="text-purple-400 hover:text-purple-300 mr-4"
+          >
+            All Blogs
+          </Link>
+          {auth?.token ? (
+            <>
+              <Link
+                to="/publish"
+                className="text-purple-400 hover:text-purple-300 mr-4"
+              >
+                Create Post
               </Link>
-              <Link to={"/profile"}>
-                <Avatar size={"big"} name="Test" />
+              <Link
+                to="/profile"
+                className="text-purple-400 hover:text-purple-300 mr-4"
+              >
+                <User size={20} />
               </Link>
-            </div>
+              <button
+                onClick={auth?.logOut}
+                className="text-purple-400 hover:text-purple-300"
+              >
+                <LogOut size={20} />
+              </button>
+            </>
           ) : (
             <Link
               to="/signin"

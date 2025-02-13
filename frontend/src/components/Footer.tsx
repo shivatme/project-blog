@@ -31,7 +31,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="mt-8 text-center text-gray-500">
-        © 2025 FutureDev Blog. All rights reserved.
+        © 2025 Dev Bytes Blog. All rights reserved.
       </div>
     </footer>
   );
