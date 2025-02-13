@@ -1,4 +1,5 @@
 import { CodeXml } from "lucide-react";
+import { Link } from "react-router";
 
 export default function HeroSection() {
   return (
@@ -8,12 +9,15 @@ export default function HeroSection() {
         <h1 className="text-6xl font-bold  mb-4 animate-pulse">Dev Bytes</h1>
         <p className="text-xl mb-3">A blogging platform for developers</p>
         <p className="text-xl mb-8">
-          Exploring the frontier of Software Development
+          Exploring the frontier of Software Developmenat
         </p>
 
-        <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+        <Link
+          to="/blogs"
+          className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
+        >
           Explore Articles
-        </button>
+        </Link>
       </div>
       <div className="absolute inset-0 z-0 opacity-30">
         <div className="absolute top-1/4 left-1/4 animate-float">

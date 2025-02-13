@@ -12,6 +12,9 @@ export default {
           "50%": { transform: "translateY(-10px)" },
         },
       },
+      fontFamily: {
+        spaceGrotesk: ["Space Grotesk", "sans-serif"],
+      },
     },
   },
   plugins: [],
