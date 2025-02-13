@@ -1,17 +1,17 @@
 export default function Quote() {
   return (
-    <div className="bg-slate-200 h-screen flex justify-center flex-col">
-      <div className="flex justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 to-black z-0 text-white flex items-center justify-center px-4">
+      <div className=" ">
         <div className="max-w-lg">
           <div className="text-3xl font-bold">
-            "The customer support I received was exceptional. The support team
-            went above and beyond to address my concerns"
+            Writing about code is just as important as writing code itself.
+            Sharing knowledge fuels innovation.
           </div>
           <div className="max-w-md text-xl font-semibold text-left mt-4">
-            Julies Winfield
+            John Doe
           </div>
           <div className="max-w-md text-sm font-light text-slate-400">
-            CEO | Acme corp
+            CTO | Dev Bytes
           </div>
         </div>
       </div>

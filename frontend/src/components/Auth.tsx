@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import LabelledInput from "./forms/LabelledInput";
 import SubmitButton from "./forms/SubmitButton";
 import { signIn, signUp } from "../services/authService";
+import { CodeXml } from "lucide-react";
 
 export default function Auth({ type }: { type: "signup" | "signin" }) {
   const navigate = useNavigate();
@@ -45,51 +46,56 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
   });
 
   return (
-    <div className="h-screen flex justify-center flex-col">
-      <div className="flex justify-center">
-        <div>
-          <div className="px-10">
-            <div className="text-3xl font-extrabold">Create an account</div>
-            <div className="text-slate-500">
-              {type === "signin"
-                ? "Don't have an account?"
-                : "Already have an account?"}
-              <Link
-                className="pl-2 underline"
-                to={type === "signin" ? "/signup" : "/signin"}
-              >
-                {type === "signin" ? "Sign up" : "Sign in"}
-              </Link>
-            </div>
-          </div>
-          <AppForm
-            initialValues={initialValues}
-            onSubmit={sendRequest}
-            validationSchema={validationSchema}
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+      <div className="max-w-md w-96 space-y-1">
+        <div className="text-center">
+          <CodeXml className="mx-auto h-12 w-12 text-purple-600" />
+          <h2 className="mt-6 text-3xl font-extrabold">
+            {type === "signup"
+              ? "Create a new account"
+              : "Sign in to your account"}
+          </h2>
+        </div>
+        <div className="text-center  text-slate-500">
+          {type === "signin"
+            ? "Don't have an account?"
+            : "Already have an account?"}
+          <Link
+            className="pl-2 underline"
+            to={type === "signin" ? "/signup" : "/signin"}
           >
-            <div className="pt-8">
+            {type === "signin" ? "Sign up" : "Sign in"}
+          </Link>
+        </div>
+        <AppForm
+          initialValues={initialValues}
+          onSubmit={sendRequest}
+          validationSchema={validationSchema}
+        >
+          <form className="mt-8 space-y-6">
+            <div className="rounded-md shadow-sm -space-y-px">
               {type === "signup" ? (
-                <LabelledInput
-                  label="Name"
-                  placeholder="Your name"
-                  fieldName="name"
-                />
+                <LabelledInput placeholder="Name" fieldName="name" />
               ) : null}
+              <LabelledInput placeholder="Email address" fieldName="email" />
               <LabelledInput
-                label="Email"
-                placeholder="test@gmail.com"
-                fieldName="email"
-              />
-              <LabelledInput
-                fieldName="password"
-                label="Password"
                 type={"password"}
-                placeholder="123456"
+                placeholder="Password"
+                fieldName="password"
               />
 
-              <SubmitButton title="Sign up" />
+              <SubmitButton title={type === "signup" ? "Sign up" : "Sign in"} />
             </div>
-          </AppForm>
+          </form>
+        </AppForm>
+
+        <div className="text-center">
+          <Link
+            to="/"
+            className="text-sm text-purple-400 hover:text-purple-300"
+          >
+            Back to Home
+          </Link>
         </div>
       </div>
     </div>

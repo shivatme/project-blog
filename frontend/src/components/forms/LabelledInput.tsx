@@ -2,7 +2,7 @@ import { ErrorMessage, Field } from "formik";
 
 interface LabelledInputType {
   fieldName: string;
-  label: string;
+  label?: string;
   placeholder: string;
   type?: string;
 }
@@ -15,16 +15,18 @@ function LabelledInput({
 }: LabelledInputType) {
   return (
     <div>
-      <label className="block mb-2 text-sm text-black font-semibold pt-4">
-        {label}
-      </label>
+      {label && (
+        <label className="block mb-2 text-sm text-black font-semibold pt-4">
+          {label}
+        </label>
+      )}
 
       <Field
         name={fieldName}
         placeholder={placeholder}
         type={type}
         component="input"
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        className="appearance-none rounded-sm relative block w-full px-3 py-2 my-3 border border-gray-700 placeholder-gray-500 text-white bg-gray-900  focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
       />
       <ErrorMessage
         name={fieldName}
