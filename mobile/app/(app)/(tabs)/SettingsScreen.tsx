@@ -1,9 +1,12 @@
-import { View, Text, StyleSheet } from "react-native";
+import { useSession } from "@/authContext/ctx";
+import { View, Text, StyleSheet, Button } from "react-native";
 
 export default function Tab() {
+  const { signOut } = useSession();
   return (
     <View style={styles.container}>
       <Text>Tab [Home|Settings]</Text>
+      <Button title="Sign Out" onPress={signOut} />
     </View>
   );
 }
